@@ -82,7 +82,7 @@ relativeLayout.setLayoutParams(rlp);
 //    textView.setBackgroundDrawable(new ColorDrawable(0xAA000000));
     View view = getLayoutInflater().inflate(R.layout.custom_controls,null,false);
 //    textView.setText("hairsh \n asdfasdfasdf \n asdfasdfasd \n kjhkj\n kjhkj\n kjhkjh");
-    viewContainer.addView(relativeLayout);
+//    viewContainer.addView(relativeLayout);
 
     // Action bar background is transparent by default.
     getActionBar().setBackgroundDrawable(new ColorDrawable(0xAA000000));

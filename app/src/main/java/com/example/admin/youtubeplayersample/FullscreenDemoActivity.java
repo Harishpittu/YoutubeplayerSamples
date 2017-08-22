@@ -22,16 +22,26 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Sample activity showing how to properly enable custom fullscreen behavior.
@@ -48,21 +58,29 @@ public class FullscreenDemoActivity extends YouTubeFailureRecoveryActivity imple
       ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
       : ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;
 
-  private LinearLayout baseLayout;
+  private RelativeLayout baseLayout;
   private YouTubePlayerView playerView;
   private YouTubePlayer player;
   private Button fullscreenButton;
   private CompoundButton checkbox;
   private View otherViews;
 
+//  CustomPlayerControls customPlayerControls;
+
+  
+  public static final String TAG = " fullscreen demo : ";
+
   private boolean fullscreen;
+
+  private View anchorView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.fullscreen_demo);
-    baseLayout = (LinearLayout) findViewById(R.id.layout);
+    baseLayout = (RelativeLayout) findViewById(R.id.layout);
+    anchorView = (View) findViewById(R.id.view);
     playerView = (YouTubePlayerView) findViewById(R.id.player);
     fullscreenButton = (Button) findViewById(R.id.fullscreen_button);
     checkbox = (CompoundButton) findViewById(R.id.landscape_fullscreen_checkbox);
@@ -88,6 +106,9 @@ public class FullscreenDemoActivity extends YouTubeFailureRecoveryActivity imple
     if (!wasRestored) {
       player.cueVideo("avP5d16wEp0");
     }
+
+//    customPlayerControls = new CustomPlayerControls(this,playerView,player,anchorView,false);
+//    customPlayerControls.initialize();
   }
 
   @Override
@@ -120,8 +141,8 @@ public class FullscreenDemoActivity extends YouTubeFailureRecoveryActivity imple
   }
 
   private void doLayout() {
-    LayoutParams playerParams =
-        (LayoutParams) playerView.getLayoutParams();
+    RelativeLayout.LayoutParams playerParams =
+        ( RelativeLayout.LayoutParams) playerView.getLayoutParams();
     if (fullscreen) {
       // When in fullscreen, the visibility of all other views than the player should be set to
       // GONE and the player should be laid out across the whole screen.
@@ -138,14 +159,14 @@ public class FullscreenDemoActivity extends YouTubeFailureRecoveryActivity imple
         playerParams.width = otherViewsParams.width = 0;
         playerParams.height = WRAP_CONTENT;
         otherViewsParams.height = MATCH_PARENT;
-        playerParams.weight = 1;
-        baseLayout.setOrientation(LinearLayout.HORIZONTAL);
+//        playerParams.weight = 1;
+//        baseLayout.setOrientation(LinearLayout.HORIZONTAL);
       } else {
         playerParams.width = otherViewsParams.width = MATCH_PARENT;
         playerParams.height = WRAP_CONTENT;
-        playerParams.weight = 0;
+//        playerParams.weight = 0;
         otherViewsParams.height = 0;
-        baseLayout.setOrientation(LinearLayout.VERTICAL);
+//        baseLayout.setOrientation(LinearLayout.VERTICAL);
       }
       setControlsEnabled();
     }
@@ -161,12 +182,24 @@ public class FullscreenDemoActivity extends YouTubeFailureRecoveryActivity imple
   public void onFullscreen(boolean isFullscreen) {
     fullscreen = isFullscreen;
     doLayout();
+    Log.d(TAG, "onFullscreen: ");
   }
 
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     doLayout();
+
+    Log.d(TAG, "onConfigurationChanged: ");
+    
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+
+    Log.d(TAG, "onPause: ");
+
   }
 
 }

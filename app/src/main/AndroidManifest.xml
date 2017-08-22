@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.admin.youtubeplayersample">
 
+
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!--<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>-->
+
 
     <application
         android:allowBackup="true"
@@ -127,7 +130,7 @@
             android:name=".FullscreenDemoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/fullscreen_demo_name"
-            android:screenOrientation="sensor"
+            android:screenOrientation="portrait"
             android:theme="@style/BlackNoTitleBarTheme">
 
             <meta-data
